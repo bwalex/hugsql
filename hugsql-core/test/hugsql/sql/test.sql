@@ -111,7 +111,11 @@ order by :i*:sort-by
 
 -- :name select-deep-get :? :1
 select * from test
-where id = :records.0.id
+where id = :records#0#id
+
+-- :name select-namespaced-keyword :? :1
+select * from test
+where id = :test/id
 
 -- :name drop-test-table :! :n
 -- :doc Drop test table
@@ -177,7 +181,7 @@ update :i:table set
 (string/join ","
   (for [[field _] (:updates params)]
     (str (identifier-param-quote (name field) options)
-      " = :v:updates." (name field))))
+      " = :v:updates#" (name field))))
 ~*/
 where id = :id
 
@@ -204,7 +208,7 @@ order by :i*:fields
 -- OR
 -- {:conj "or" :cond ["id" "=" 1]}
 -- note that :conj can be "", too
-:sql:conj :i:cond.0 :sql:cond.1 :v:cond.2
+:sql:conj :i:cond#0 :sql:cond#1 :v:cond#2
 
 -- :name snip-query :? :*
 :snip:select

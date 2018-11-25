@@ -63,15 +63,15 @@
   "Takes a param :name and returns a vector
    suitable for get-in lookups where the
    param :name starts with the form:
-     :employees.0.id
+     :employees#0#id
    Names must be keyword keys in hashmaps in
    param data.
    Numbers must be vector indexes in vectors
    in param data."
   [nam]
   (mapv
-   (fn [x] (if (re-find #"^\d+$" x) (Long. ^String x) (keyword x)))
-   (string/split (name nam) #"\.")))
+    (fn [x] (if (re-find #"^\d+$" x) (Long. ^String x) (keyword x)))
+    (string/split (subs (str nam) 1) #"\#")))
 
 ;; Default Object implementations
 (extend-type Object

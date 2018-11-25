@@ -913,7 +913,7 @@ where :snip*:cond
 -- OR
 -- {:conj "or" :cond ["id" "=" 1]}
 -- note that :conj can be "", too
-:sql:conj :i:cond.0 :sql:cond.1 :v:cond.2
+:sql:conj :i:cond#0 :sql:cond#1 :v:cond#2
 {% endhighlight %}
 
       <p>Using the above snippets, we can now construct the full
@@ -1165,12 +1165,12 @@ select * from my_table limit 1
           <p>The parameter name can optionally use a "deep get" syntax
           to drill down into a parameter data structure.  This syntax
           consists of keywords and integers joined by a
-          period <code>.</code>. A keyword is a key for a hashmap.  An
+          hash <code>#</code>. A keyword is a key for a hashmap.  An
             integer is a vector index. For example:</p>
 
 {% highlight sql %}
 -- first-employee :? :1
-select * from employees where id = :value:employees.0.id
+select * from employees where id = :value:employees#0#id
 {% endhighlight %}
 
 
@@ -1178,6 +1178,13 @@ select * from employees where id = :value:employees.0.id
 (first-employee db {:employees [{:id 1} {:id 2}]})
 ;=> {:id 1 :name "Al"}
 {% endhighlight %}
+
+          <h5 id="namespaced-keyword-param-name">Aside: Namespace-qualified Keywords</h5>
+
+          <p>There is limited support for namespaced keywords. HugSQL currently
+          only understands explicit namespaces, e.g.
+          <code>:myproject.core.employee/name</code>; double-colon shorthands
+          like <code>::employee/name</code> are not supported.</p>
 
 
           <span id="escaping-colon"></span>
